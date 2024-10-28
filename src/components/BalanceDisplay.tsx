@@ -11,11 +11,10 @@ export const BalanceDisplay: FC = () => {
     const updateBalance = async () => {
       if (!connection || !publicKey) {
         console.error("Wallet not connected or connection unavailable");
-        return; // Adicione um return aqui para sair da função se não houver conexão ou chave pública
+        return; 
       }
 
       try {
-        // Registra o listener para alterações na conta
         const subscriptionId = connection.onAccountChange(
           publicKey,
           updatedAccountInfo => {
@@ -28,7 +27,7 @@ export const BalanceDisplay: FC = () => {
           }
         );
 
-        // Atualiza o saldo inicialmente
+  
         const accountInfo = await connection.getAccountInfo(publicKey);
 
         if (accountInfo) {
@@ -37,7 +36,6 @@ export const BalanceDisplay: FC = () => {
           throw new Error("Account info not found");
         }
 
-        // Limpa o listener quando o componente for desmontado ou o publicKey mudar
         return () => {
           connection.removeAccountChangeListener(subscriptionId);
         };
