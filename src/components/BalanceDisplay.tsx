@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from "react";
 
 export const BalanceDisplay: FC = () => {
   const [balance, setBalance] = useState(0);
-  const [displayedBalance, setDisplayedBalance] = useState(0); // Estado para o saldo exibido com animação
+  const [displayedBalance, setDisplayedBalance] = useState(0); 
   const { connection } = useConnection();
  const {publicKey} = useWallet();
 
