@@ -10,10 +10,16 @@ export const Header: FC = () => {
   }, [])
 
   return (
-      <div className="h-[80px] flex bg-neutral-950 flex-row items-center justify-between uppercase px-4 text-center">
-            <Image src="/solana-sol-logo.png" height="100" width="50" alt='logo solana'/>
-            <span className='text-font-bold font-bold text-balance bg-gradient-to-tr from-teal-300 to-fuchsia-500 bg-clip-text text-transparent text-4xl'>Program Ping Solana</span>
-                {isClient ? <WalletMultiButton/> : ''}     
+      <div className="h-[80px] w-full flex bg-neutral-900 flex-row items-center justify-between uppercase px-2 md:px-4 md:text-center">
+        <div>
+        <Image src="/solana-sol-logo.png" height="100" width="40" alt='logo solana' className='hidden md:flex'/>
+        </div>
+        <div>
+        <span className='md:absolute md:top-3 md:left-0 md:right-0 font-medium text-balance bg-gradient-to-tr from-teal-300 to-fuchsia-500 bg-clip-text text-transparent md:text-5xl text-xl'>Program Ping</span>
+        </div>
+        <div>
+        {isClient ? <WalletMultiButton /> : ''}     
+        </div>
  </div>
   )
 }
