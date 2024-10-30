@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
 import WalletContextProvider from '../components/WalletContextProvider'
 import { PingButton } from '../components/PingButton'
 import Head from 'next/head'
@@ -9,7 +8,7 @@ import { Header } from '../components/Header'
 const Home: NextPage = () => {
 
   return (
-    <div className={styles.App}>
+    <div className="flex flex-col bg-[#282c34] min-h-screen items-center" >
       <Head>
         <title>Wallet-Adapter Example</title>
         <meta
@@ -20,7 +19,7 @@ const Home: NextPage = () => {
       </Head>
       <WalletContextProvider>
         <Header/>
-        <div className={styles.AppBody}>
+        <div className="pt-[50px] flex flex-col justify-center items-center">
           <PingButton />
           <BalanceDisplay/>
         </div>

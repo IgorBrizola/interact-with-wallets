@@ -4,14 +4,15 @@ import { FC, useEffect, useState } from "react";
 
 export const BalanceDisplay: FC = () => {
   const [balance, setBalance] = useState(0);
+  const [displayedBalance, setDisplayedBalance] = useState(0); 
   const { connection } = useConnection();
-  const { publicKey } = useWallet();
+ const {publicKey} = useWallet();
 
   useEffect(() => {
     const updateBalance = async () => {
       if (!connection || !publicKey) {
         console.error("Wallet not connected or connection unavailable");
-        return; 
+        return;
       }
 
       try {
@@ -19,21 +20,19 @@ export const BalanceDisplay: FC = () => {
           publicKey,
           updatedAccountInfo => {
             if (updatedAccountInfo) {
-              setBalance(updatedAccountInfo.lamports / LAMPORTS_PER_SOL);
+              const newBalance = updatedAccountInfo.lamports / LAMPORTS_PER_SOL;
+              setBalance(newBalance); 
             }
           },
           {
-            commitment: "confirmed"
+            commitment: "confirmed",
           }
         );
 
-  
         const accountInfo = await connection.getAccountInfo(publicKey);
-
+        
         if (accountInfo) {
           setBalance(accountInfo.lamports / LAMPORTS_PER_SOL);
-        } else {
-          throw new Error("Account info not found");
         }
 
         return () => {
@@ -47,9 +46,29 @@ export const BalanceDisplay: FC = () => {
     updateBalance();
   }, [connection, publicKey]);
 
+  useEffect(() => {
+    if (displayedBalance === balance) return;
+
+    const increment = (balance - displayedBalance) / 20;
+    const interval = setInterval(() => {
+      setDisplayedBalance((prevBalance) => {
+        const newBalance = prevBalance + increment;
+        if (newBalance >= balance) {
+          clearInterval(interval);
+          return balance;
+        }
+        return newBalance;
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [balance, displayedBalance]);
+
   return (
     <div>
-      <p className="text-2xl font-bold mt-12">{publicKey ? `${balance.toPrecision(3)} SOL` : "Wallet not connected!"}</p>
+      <p className="md:text-5xl text-3xl font-light mt-12 bg-gradient-to-r from-purple-400 to-sky-300 bg-clip-text text-transparent">
+        {publicKey ? `${displayedBalance.toFixed(2)} SOL` : "Wallet not connected!"}
+      </p>
     </div>
   );
 };
